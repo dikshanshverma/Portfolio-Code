@@ -3,47 +3,343 @@ document.addEventListener("DOMContentLoaded", function () {
     const contentTitle = document.getElementById("content-title");
     const contentArea = document.getElementById("content-area");
 
+    // Create PDF viewer element
+    const pdfViewer = document.createElement('div');
+    pdfViewer.className = 'pdf-viewer';
+    pdfViewer.innerHTML = '<iframe id="pdf-frame"></iframe>';
+    document.body.appendChild(pdfViewer);
+
     // Content for each section
     const contentData = {
         "content-strategy": { 
             title: "Content Strategy", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Info Design for SaaS</div><div class="big-box" data-pdf="dummy.pdf">DOC Maintenance Mode</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box" data-pdf="dummy.pdf">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/004d99/ffffff?text=SaaS+Design" alt="SaaS Design">
+                        </div>
+                        <h3>Info Design for SaaS</h3>
+                        <div class="metric-content">
+                            <p>Information architecture and design principles for SaaS products</p>
+                        </div>
+                    </div>
+                    <div class="metric-box" data-pdf="dummy.pdf">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/004d99/ffffff?text=Doc+Maintenance" alt="Doc Maintenance">
+                        </div>
+                        <h3>DOC Maintenance Mode</h3>
+                        <div class="metric-content">
+                            <p>Documentation maintenance and update procedures</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "docs-saas": { 
             title: "Docs for SaaS Products", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">User Requirements</div><div class="big-box" data-pdf="dummy.pdf">Documentation Standards</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box" data-pdf="dummy.pdf">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/004d99/ffffff?text=Door+Requirements" alt="Door Requirements">
+                        </div>
+                        <h3>Door Requirement Specification</h3>
+                        <div class="metric-content">
+                            <p>Detailed specifications for door requirements</p>
+                        </div>
+                    </div>
+                    <div class="metric-box" data-pdf="dummy.pdf">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/004d99/ffffff?text=HDD+Samples" alt="HDD Samples">
+                        </div>
+                        <h3>HDD Samples</h3>
+                        <div class="metric-content">
+                            <p>Sample HDD documentation and examples</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "knowledge-base": { 
             title: "Knowledge Base", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Security and Compliance</div><div class="big-box" data-pdf="dummy.pdf">Technical FAQs</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box" data-pdf="dummy.pdf">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/004d99/ffffff?text=Security" alt="Security">
+                        </div>
+                        <h3>Security and Compliance</h3>
+                        <div class="metric-content">
+                            <p>Security protocols and compliance documentation</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "product-tour": { 
             title: "Product Tour", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Interactive Walkthrough</div><div class="big-box" data-pdf="dummy.pdf">Guided Demos</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "api-docs": { 
             title: "API Docs", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">REST API Guidelines</div><div class="big-box" data-pdf="dummy.pdf">Authentication & Usage</div>` 
-        },
-        "product-writing": { 
-            title: "Product Writing", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Technical Blogs</div><div class="big-box" data-pdf="dummy.pdf">User Guides</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "sops": { 
             title: "SOPs", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Process Documentation</div><div class="big-box" data-pdf="dummy.pdf">Operational Standards</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "training-content": { 
             title: "Training Content", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Onboarding Materials</div><div class="big-box" data-pdf="dummy.pdf">Employee Training</div>` 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
         "product-videos": { 
-            title: "Product Explainer Videos", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Feature Walkthroughs</div><div class="big-box" data-pdf="dummy.pdf">Customer Tutorials</div>` 
+            title: "Product Explainer Videos/User Onboarding", 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         },
-        "market-fit": { 
-            title: "Market Fit Concept Notes", 
-            text: `<div class="big-box" data-pdf="dummy.pdf">Competitive Analysis</div><div class="big-box" data-pdf="dummy.pdf">Market Trends</div>` 
+        "product-marketing": { 
+            title: "Product Marketing", 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
+        },
+        "white-paper": { 
+            title: "White Paper", 
+            text: `
+                <div class="metrics-container">
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                    <div class="metric-box empty">
+                        <div class="metric-image">
+                            <img src="https://placehold.co/300x200/cccccc/666666?text=Empty" alt="Empty">
+                        </div>
+                        <h3>Empty</h3>
+                        <div class="metric-content">
+                            <p>Content pending</p>
+                        </div>
+                    </div>
+                </div>`
         }
     };
 
@@ -51,15 +347,26 @@ document.addEventListener("DOMContentLoaded", function () {
         contentTitle.innerHTML = contentData[key].title;
         contentArea.innerHTML = contentData[key].text;
         
-        // Add click event listeners to the new boxes
-        const boxes = contentArea.querySelectorAll('.big-box');
+        // Add click event listeners to the boxes
+        const boxes = contentArea.querySelectorAll('.metric-box');
         boxes.forEach(box => {
-            box.addEventListener('click', function() {
-                const pdfPath = this.getAttribute('data-pdf');
-                window.open(pdfPath, '_blank');
-            });
+            if (!box.classList.contains('empty')) {
+                box.addEventListener('click', function() {
+                    const pdfPath = this.getAttribute('data-pdf');
+                    const pdfFrame = document.getElementById('pdf-frame');
+                    pdfFrame.src = pdfPath;
+                    pdfViewer.classList.add('active');
+                });
+            }
         });
     }
+
+    // Close PDF viewer when clicking outside
+    pdfViewer.addEventListener('click', function(e) {
+        if (e.target === pdfViewer) {
+            pdfViewer.classList.remove('active');
+        }
+    });
 
     updateContent("content-strategy");
 
