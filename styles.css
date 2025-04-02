@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
+    min-height: 100vh;
 }
 
 /* Sidebar */
@@ -21,6 +22,28 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    background: #002f6c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.menu-toggle:hover {
+    background: #004d99;
 }
 
 .logo-container {
@@ -81,6 +104,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+    transition: margin-left 0.3s ease-in-out;
 }
 
 /* Content Wrapper */
@@ -135,6 +159,9 @@ body {
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .metric-box:not(.empty):hover {
@@ -196,32 +223,23 @@ body {
     text-align: center;
 }
 
-/* PDF Viewer */
-.pdf-viewer {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
+/* Error Message */
+.error-message {
+    text-align: center;
+    padding: 40px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.pdf-viewer iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    height: 90%;
-    background: white;
-    border: none;
-    border-radius: 5px;
+.error-message h2 {
+    color: #dc3545;
+    margin-bottom: 20px;
 }
 
-.pdf-viewer.active {
-    display: block;
+.error-message p {
+    color: #666;
+    font-size: 1.1rem;
 }
 
 /* Responsive Design */
@@ -229,19 +247,152 @@ body {
     .metrics-container {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .content {
+        padding: 20px;
+    }
 }
 
 @media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
     .metrics-container {
         grid-template-columns: 1fr;
     }
     
     .content-wrapper {
         width: 95%;
-        padding: 20px;
+        padding: 15px;
     }
     
     .metric-image {
         height: 150px;
     }
+
+    .portfolio-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    #content-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Content Page Styles */
+.content-page {
+    padding: 20px;
+}
+
+.page-header {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.page-header h2 {
+    color: #002f6c;
+    font-size: 2rem;
+    margin: 0 0 10px 0;
+}
+
+.page-header .subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.content-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.content-section h3 {
+    color: #002f6c;
+    font-size: 1.5rem;
+    margin: 0 0 15px 0;
+}
+
+.content-section p {
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.content-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.content-section ul li {
+    color: #666;
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.content-section ul li:before {
+    content: "•";
+    color: #002f6c;
+    position: absolute;
+    left: 0;
+}
+
+/* Mobile Content Page Adjustments */
+@media (max-width: 768px) {
+    .content-page {
+        padding: 10px;
+    }
+
+    .page-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .page-header .subtitle {
+        font-size: 1rem;
+    }
+
+    .content-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .content-section h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Overlay for mobile menu */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
 }
