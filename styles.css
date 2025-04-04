@@ -298,6 +298,54 @@ body {
 /* Content Page Styles */
 .content-page {
     padding: 20px;
+    max-width: 100%;
+    overflow-x: auto;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.back-button {
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #002f6c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.back-button:hover {
+    background-color: #004d99;
+}
+
+.content-page img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px 0;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.content-page table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.content-page table, .content-page th, .content-page td {
+    border: 1px solid #ddd;
+}
+
+.content-page th, .content-page td {
+    padding: 8px;
+    text-align: left;
+}
+
+.content-page th {
+    background-color: #f2f2f2;
 }
 
 .page-header {
@@ -355,6 +403,59 @@ body {
     color: #002f6c;
     position: absolute;
     left: 0;
+}
+
+/* Additional styles for loaded HTML content */
+.content-page h1, .content-page h2, .content-page h3, .content-page h4, .content-page h5, .content-page h6 {
+    color: #002f6c;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.content-page p {
+    margin-bottom: 1em;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.content-page ul, .content-page ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+}
+
+.content-page li {
+    margin-bottom: 0.5em;
+}
+
+.content-page pre, .content-page code {
+    background-color: #f5f5f5;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.content-page pre {
+    padding: 1em;
+    overflow-x: auto;
+    margin-bottom: 1em;
+}
+
+.content-page blockquote {
+    border-left: 4px solid #002f6c;
+    padding-left: 1em;
+    margin-left: 0;
+    margin-bottom: 1em;
+    color: #555;
+}
+
+/* Fix for VML images */
+v\:* {
+    display: inline-block;
+}
+
+/* Improve spacing and readability */
+.content-page div {
+    margin-bottom: 1em;
 }
 
 /* Mobile Content Page Adjustments */
