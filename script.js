@@ -545,192 +545,132 @@ document.addEventListener("DOMContentLoaded", function () {
             
             contentWrapper.appendChild(backButton);
             
-            // Add the content
+            // Process and clean up the content before adding it
+            const processContent = (element) => {
+                // Handle tables containing images
+                const tables = element.querySelectorAll('table');
+                tables.forEach(table => {
+                    const images = table.querySelectorAll('img');
+                    if (images.length > 0) {
+                        // Create a container for the image
+                        const container = document.createElement('div');
+                        container.className = 'workflow-container';
+                        
+                        // Get all images from the table
+                        images.forEach(img => {
+                            const imgClone = img.cloneNode(true);
+                            imgClone.removeAttribute('style');
+                            imgClone.removeAttribute('width');
+                            imgClone.removeAttribute('height');
+                            imgClone.className = 'workflow-image';
+                            container.appendChild(imgClone);
+                        });
+                        
+                        // Replace the table with the container
+                        table.parentNode.replaceChild(container, table);
+                    }
+                });
+
+                // Handle VML shapes
+                const vmlShapes = element.querySelectorAll('v\\:shape');
+                vmlShapes.forEach(shape => {
+                    const imagedata = shape.querySelector('v\\:imagedata');
+                    if (imagedata) {
+                        const src = imagedata.getAttribute('src');
+                        if (src) {
+                            const container = document.createElement('div');
+                            container.className = 'workflow-container';
+                            
+                            const img = document.createElement('img');
+                            img.src = src;
+                            img.className = 'workflow-image';
+                            container.appendChild(img);
+                            
+                            shape.parentNode.replaceChild(container, shape);
+                        }
+                    }
+                });
+
+                // Handle remaining images
+                const images = element.querySelectorAll('img:not(.workflow-image)');
+                images.forEach(img => {
+                    const container = document.createElement('div');
+                    container.className = 'workflow-container';
+                    
+                    const imgClone = img.cloneNode(true);
+                    imgClone.removeAttribute('style');
+                    imgClone.removeAttribute('width');
+                    imgClone.removeAttribute('height');
+                    imgClone.className = 'workflow-image';
+                    container.appendChild(imgClone);
+                    
+                    img.parentNode.replaceChild(container, img);
+                });
+
+                // Add styles for workflow images
+                const styleElement = document.createElement('style');
+                styleElement.textContent = `
+                    .workflow-container {
+                        margin: 30px auto;
+                        padding: 0;
+                        width: 100%;
+                        max-width: 1200px;
+                        text-align: center;
+                    }
+                    .workflow-image {
+                        max-width: 100%;
+                        width: auto;
+                        height: auto;
+                        display: block;
+                        margin: 0 auto;
+                        border: 1px solid #eee;
+                        border-radius: 4px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    }
+                    .content-page {
+                        padding: 20px;
+                        max-width: 100%;
+                        overflow-x: hidden;
+                    }
+                    .content-page table {
+                        display: none;
+                    }
+                    .content-page div[style*="display:"] {
+                        display: block !important;
+                    }
+                `;
+                document.head.appendChild(styleElement);
+            };
+
+            // Process the content
+            processContent(bodyContent);
+            
+            // Add the processed content
             contentWrapper.appendChild(bodyContent);
             
             // Replace the content area with our new content
             contentArea.innerHTML = '';
             contentArea.appendChild(contentWrapper);
             
-            // Fix relative paths for images and other assets
+            // Fix relative paths for images
             const basePath = pageUrl.substring(0, pageUrl.lastIndexOf('/') + 1);
+            const assetsFolder = pageUrl.includes('Communication Coach Bot') 
+                ? 'content/API Docs/Communication Coach Bot Workflow Builder & API Document v2.1_files/'
+                : basePath;
             
-            // Determine the assets folder based on the pageUrl
-            let assetsFolder = '';
-            if (pageUrl.includes('Communication Coach Bot') || 
-                pageUrl.includes('SaaSmile Plugin for eCommerce platform') || 
-                pageUrl.includes('THOUGHT LEADERSHIP APPROACH ON PRODUCT') ||
-                pageUrl.includes('Secuvy - Sample') ||
-                pageUrl.includes('User Guide - Amagi CLOUDPORT LIVE and DYNAMIC') ||
-                pageUrl.includes('Using Document 360 as a Knowledgebase')) {
-                // No assets folder needed as images are embedded
-                assetsFolder = '';
-            } else if (pageUrl.includes('SUNDOOR.html')) {
-                assetsFolder = 'content/SUNDOOR/';
-            } else if (pageUrl.includes('Sample Ideation')) {
-                assetsFolder = 'content/Docs for Saas Products/Sample Ideation/';
-            } else {
-                assetsFolder = basePath + '/';
-            }
-            
-            // Update image sources for both v:imagedata and img tags
-            const vmlImages = contentWrapper.querySelectorAll('v\\:imagedata');
-            vmlImages.forEach(img => {
-                const src = img.getAttribute('src');
-                if (src) {
-                    // Extract the filename from the src attribute
-                    const filename = src.split('/').pop();
-                    img.setAttribute('src', assetsFolder + filename);
-                }
-            });
-            
-            const regularImages = contentWrapper.querySelectorAll('img');
-            regularImages.forEach(img => {
-                const src = img.getAttribute('src');
-                if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
-                    // Extract the filename from the src attribute
-                    const filename = src.split('/').pop();
-                    img.setAttribute('src', assetsFolder + filename);
-                }
-            });
-            
-            // Add custom styles for the content
-            const styleElement = document.createElement('style');
-            styleElement.textContent = `
-                .content-page {
-                    padding: 20px;
-                    max-width: 100%;
-                    overflow-x: auto;
-                    font-family: Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #333;
-                }
-                .back-button {
-                    margin-bottom: 20px;
-                    padding: 8px 16px;
-                    background-color: #002f6c;
-                    color: white;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 14px;
-                }
-                .back-button:hover {
-                    background-color: #004d99;
-                }
-                .content-page img {
-                    max-width: 100%;
-                    height: auto;
-                    display: block;
-                    margin: 15px 0;
-                    border: 1px solid #eee;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }
-                .content-page table {
-                    border-collapse: collapse;
-                    width: 100%;
-                    margin-bottom: 20px;
-                }
-                .content-page table, .content-page th, .content-page td {
-                    border: 1px solid #ddd;
-                }
-                .content-page th, .content-page td {
-                    padding: 8px;
-                    text-align: left;
-                }
-                .content-page th {
-                    background-color: #f2f2f2;
-                }
-                .content-page h1, .content-page h2, .content-page h3, .content-page h4, .content-page h5, .content-page h6 {
-                    color: #002f6c;
-                    margin-top: 1.5em;
-                    margin-bottom: 0.5em;
-                }
-                .content-page p {
-                    margin-bottom: 1em;
-                }
-                .content-page ul, .content-page ol {
-                    margin-bottom: 1em;
-                    padding-left: 2em;
-                }
-                .content-page li {
-                    margin-bottom: 0.5em;
-                }
-                .content-page pre, .content-page code {
-                    background-color: #f5f5f5;
-                    padding: 0.2em 0.4em;
-                    border-radius: 3px;
-                    font-family: monospace;
-                }
-                .content-page pre {
-                    padding: 1em;
-                    overflow-x: auto;
-                    margin-bottom: 1em;
-                }
-                .content-page blockquote {
-                    border-left: 4px solid #002f6c;
-                    padding-left: 1em;
-                    margin-left: 0;
-                    margin-bottom: 1em;
-                    color: #555;
-                }
-                /* Fix for VML images */
-                v\\:* {
-                    display: inline-block;
-                }
-                /* Improve spacing and readability */
-                .content-page div {
-                    margin-bottom: 1em;
-                }
-                .content-page p {
-                    text-align: justify;
-                }
-                /* Add a subtle border to images for better visibility */
-                .content-page img {
-                    border: 1px solid #eee;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }
-            `;
-            document.head.appendChild(styleElement);
-            
-            // Add a script to fix any remaining image issues
-            const fixScript = document.createElement('script');
-            fixScript.textContent = `
-                // Fix any remaining image issues
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Find all v:shape elements and convert them to regular images
-                    const vmlShapes = document.querySelectorAll('v\\:shape');
-                    vmlShapes.forEach(shape => {
-                        const imagedata = shape.querySelector('v\\:imagedata');
-                        if (imagedata) {
-                            const src = imagedata.getAttribute('src');
-                            if (src) {
-                                const img = document.createElement('img');
-                                img.src = src;
-                                img.style.maxWidth = '100%';
-                                img.style.height = 'auto';
-                                shape.parentNode.replaceChild(img, shape);
-                            }
-                        }
-                    });
-                    
-                    // Fix any remaining image paths
-                    const allImages = document.querySelectorAll('img');
-                    allImages.forEach(img => {
-                        const src = img.getAttribute('src');
-                        if (src && (src.includes('Communication Coach Bot Workflow Builder & API Document v2.1_files') || 
-                                   src.includes('09. Confidential - User Guide - Amagi CLOUDPORT LIVE and DYNAMIC_files') ||
-                                   src.includes('08. Sample _ Ideation _ Product strategy_files') ||
-                                   src.includes('12. Secuvy - sample_files') ||
-                                   src.includes('10. Confidential _ Using Document 360 as a Knowledgebase_files') ||
-                                   src.includes('SUNDOOR_files'))) {
-                            const filename = src.split('/').pop();
-                            img.setAttribute('src', '${assetsFolder}' + filename);
-                        }
-                    });
+            // Update image sources
+            const updateImageSources = (element) => {
+                const images = element.querySelectorAll('img');
+                images.forEach(img => {
+                    const src = img.getAttribute('src');
+                    if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
+                        const filename = src.split('/').pop();
+                        img.setAttribute('src', assetsFolder + filename);
+                    }
                 });
-            `;
-            document.head.appendChild(fixScript);
+            };
+
+            updateImageSources(contentWrapper);
             
         } catch (error) {
             contentArea.innerHTML = `
@@ -744,6 +684,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateContent(key) {
+        // Clear any existing content and styles
+        contentArea.innerHTML = '';
+        const existingStyles = document.querySelectorAll('style');
+        existingStyles.forEach(style => {
+            if (style.textContent.includes('.content-page')) {
+                style.remove();
+            }
+        });
+        
+        // Update the title and content
         contentTitle.innerHTML = contentData[key].title;
         contentArea.innerHTML = contentData[key].text;
         
@@ -766,8 +716,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Initialize with content strategy
     updateContent("content-strategy");
 
+    // Handle menu item clicks
     menuItems.forEach((item) => {
         item.addEventListener("click", function (event) {
             event.preventDefault();
